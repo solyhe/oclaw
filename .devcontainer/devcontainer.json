@@ -1,14 +1,7 @@
 {
-  "name": "OpenClaw Dev",
-  "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
-  "features": {
-    "node": "20"
-  },
-  "postCreateCommand": "npm install -g openclaw@latest",
-  "postStartCommand": "openclaw gateway --port 18789 &",
-  "customizations": {
-    "codespaces": {
-      "openFiles": ["README.md"]
-    }
-  }
+  "name": "OpenClaw Codespace",
+  "image": "ubuntu:22.04",
+  "postCreateCommand": "bash /workspaces/oclaw/setup.sh",
+  "forwardPorts": [18789],
+  "remoteUser": "codespace"
 }
