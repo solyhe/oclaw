@@ -1,7 +1,6 @@
 {
   "name": "OpenClaw Codespace",
   "image": "ubuntu:22.04",
-  "postCreateCommand": "bash /workspaces/oclaw/setup.sh",
-  "forwardPorts": [18789],
-  "remoteUser": "codespace"
+  "postCreateCommand": "bash setup.sh",
+  "forwardPorts": [18789]
 }
