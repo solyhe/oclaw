@@ -1,9 +1,9 @@
 #!/bin/bash
 set -e
 
-echo "=== OpenClaw Setup Started (Official CLI Portal Mode) ==="
+echo "=== OpenClaw Setup Started ==="
 
-# 1️⃣ 基础依赖
+# 1️⃣ 安装基础依赖
 apt-get update
 apt-get install -y curl git
 
@@ -17,7 +17,7 @@ npm install -g @openclaw/cli
 # 4️⃣ 创建配置目录
 mkdir -p ~/.openclaw
 
-# 5️⃣ 配置飞书 channel（如果环境变量存在）
+# 5️⃣ 配置飞书 channel（如果 Secrets 存在）
 echo "=== 配置飞书 ==="
 if [ -n "$FEISHU_APP_ID" ] && [ -n "$FEISHU_APP_SECRET" ]; then
   openclaw channels add feishu \
@@ -28,11 +28,26 @@ else
   echo "⚠ 未检测到飞书 Secrets，跳过飞书配置"
 fi
 
-# 6️⃣ 启动 OpenClaw Gateway
+# 6️⃣ 启动 OpenClaw Gateway（后台运行）
 echo "=== 启动 OpenClaw Gateway ==="
-# Gateway 默认会尝试官方 portal 认证，如果首次启动会弹出浏览器
 nohup openclaw gateway run --host 0.0.0.0 --port 18789 > gateway.log 2>&1 &
 
 echo "✅ Gateway 已启动，日志输出到 gateway.log"
+
+# 7️⃣ 提示使用交互式 config 设置 API
+echo ""
+echo "=== 提示：配置 LLM API ==="
+echo "现在你可以通过交互式命令设置 Qwen 或其他 LLM API："
+echo ""
+echo "  openclaw config"
+echo ""
+echo "执行后，OpenClaw 会一步步提示你："
+echo "  - 选择 llm.provider"
+echo "  - 输入 API 网关 URL"
+echo "  - 输入 API Key"
+echo "  - 选择模型（例如 qwen-turbo）"
+echo ""
+echo "完成后可重启 Gateway 生效："
+echo "  openclaw gateway restart"
+echo ""
 echo "=== Setup Completed ==="
-echo "⚠ 首次启动可能需要打开浏览器完成官方 portal 认证"
